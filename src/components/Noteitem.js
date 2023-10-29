@@ -12,8 +12,8 @@ function Noteitem(props) {
           <h5 className="card-title">{notes.title} </h5>
           <p className="card-text">{notes.description}</p>
           <div className="d-flex flex-row-reverse">
-            <i className="fa-regular fa-trash-can fa-xl mx-4 " style={{color:"red"}} onClick={()=>{deleteNote(notes._id)}} ></i>
-            <i className="fa-regular fa-pen-to-square fa-xl " onClick={()=>{updateNote(notes)}} style={{color:"blue"}} ></i>
+            <i className="fa-regular fa-trash-can fa-xl mx-4 " style={{color:"red"}} onClick={()=>{deleteNote(notes._id); props.showAlert("Deleted Successfully", "success");}} ></i>
+            <i className="fa-regular fa-pen-to-square fa-xl " onClick={()=>{updateNote(notes); }} style={{color:"blue"}} ></i>
           </div>
         </div>
       </div>

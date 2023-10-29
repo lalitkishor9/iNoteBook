@@ -1,12 +1,17 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation , useNavigate} from "react-router-dom";
 
 
 const Navbar = () => {
+  let history = useNavigate();
+  const handleLogout = ()=>{
+    localStorage.removeItem('token');
+    history('/login');
+  }
   let location = useLocation();
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav className=" fixed-top navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
             iNotebook
@@ -25,63 +30,21 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className={`nav-link ${location.pathname === "/" ? "active" : ""}`} aria-current="page" to="/">
+                <Link style={{ "backgroundColor": location.pathname === "/" ? "#e52165" : "" , "borderRadius": "12px" }} className={`nav-link active mx-4 `}  to="/">
                   Home
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className={`nav-link ${location.pathname === "/about" ? "active" : ""}`} to="/about">
+                <Link style={{ "backgroundColor": location.pathname === "/about" ? "#e52165" : "" , "borderRadius": "12px"}} className={`nav-link active mx-2`} to="/about">
                   About
                 </Link>
               </li>
-              {/* <li className="nav-item dropdown">
-                <Link
-                  className="nav-link dropdown-toggle"
-                  to="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Dropdown
-                </Link>
-                <ul className="dropdown-menu">
-                  <li>
-                    <Link className="dropdown-item" to="#">
-                      Action
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="#">
-                      Another action
-                    </Link>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="#">
-                      Something else here
-                    </Link>
-                  </li>
-                </ul>
-              </li> */}
-              {/* <li className="nav-item">
-                <Link className="nav-link disabled" aria-disabled="true">
-                  Disabled
-                </Link>
-              </li> */}
+              
             </ul>
-            <form className="d-flex" role="search">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-success" type="submit">
-                Search
-              </button>
-            </form>
+            {!localStorage.getItem('token') ? <form className="d-flex" role="search">
+            <Link className="btn btn-primary mx-2" to="/login" role="button">Login</Link>
+            <Link className="btn btn-primary mx-2" to="/signup" role="button">Signup</Link>
+            </form> : <button onClick={handleLogout} className="btn btn-primary">Logout</button>}
           </div>
         </div>
       </nav>

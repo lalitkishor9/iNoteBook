@@ -2,12 +2,19 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import contextValue from "../context/notes/noteContext";
 import Noteitem from "./Noteitem";
 import AddNote from "./AddNote";
+import { useNavigate } from "react-router-dom";
 
-function Notes() {
+function Notes(props) {
   const context = useContext(contextValue);
+  let history = useNavigate();
   const { notes, getNotes, editNote } = context;
   useEffect(() => {
+    if(localStorage.getItem('token')){
     getNotes();
+    }
+    else{
+      history('/login');
+    }
     // eslint-disable-next-line
   }, []);
   const ref = useRef(null);
@@ -18,18 +25,18 @@ function Notes() {
         setNote({id : CurrentNote._id,etitle:CurrentNote.title, edescription: CurrentNote.description, etag:CurrentNote.tag});
       };
       const handleClick = (e)=>{
-        console.log("Updating the note...", note);
+        // console.log("Updating the note...", note);
         editNote(note.id,note.etitle,note.edescription,note.etag);
         refClose.current.click();
-        
+        props.showAlert("Updated Successfully", "success");
       }
       const onChange = (e)=>{
         setNote({...note,[e.target.name]:e.target.value})
       }
   return (
     <>
-      <AddNote />
-      <button type="button" ref = {ref} className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+      <AddNote showAlert={props.showAlert}/>
+      <button type="button" ref = {ref} className="btn d-none btn-primary" data-toggle="modal" data-target="#exampleModal">
   Launch demo modal
 </button>
 
@@ -46,11 +53,11 @@ function Notes() {
       <form className=" my-3">
           <div className="form-group">
             <label htmlFor="title">Title</label>
-            <input type="text" className="form-control" value={note.etitle} id="etitle" aria-describedby="emailHelp" name='etitle' placeholder="title" onChange={onChange}/>
+            <input type="text" className="form-control" value={note.etitle} id="etitle" aria-describedby="emailHelp" name='etitle' placeholder="title" onChange={onChange} />
           </div>
           <div className="form-group">
             <label htmlFor="description" >Description</label>
-            <input type="text" className="form-control" value={note.edescription} id="edescription" name='edescription' placeholder="Description" onChange={onChange}/>
+            <input type="text" className="form-control" value={note.edescription} id="edescription" name='edescription' placeholder="Description" onChange={onChange} />
           </div>
           <div className="form-group">
             <label htmlFor="description" >Tag</label>
@@ -60,16 +67,19 @@ function Notes() {
       </div>
       <div className="modal-footer">
         <button type="button" ref = {refClose} className="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" onClick={handleClick} className="btn btn-primary">Update Note</button>
+        <button type="button" disabled={note.etitle.length < 5 || note.edescription.length < 5} onClick={handleClick} className="btn btn-primary">Update Note</button>
       </div>
     </div>
   </div>
 </div>
       <div className="row my-3">
         <h2>Your Notes</h2>
+        <div className='container'>
+        {notes.length === 0 && "No notes to display"}
+        </div>
         {notes.map((note) => {
           return (
-            <Noteitem key={note._id} updateNote={updateNote} notes={note} />
+            <Noteitem key={note._id} updateNote={updateNote} showAlert={props.showAlert} notes={note} />
           );
         })}
       </div>
