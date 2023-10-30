@@ -56,12 +56,12 @@ function Notes(props) {
             <input type="text" className="form-control" value={note.etitle} id="etitle" aria-describedby="emailHelp" name='etitle' placeholder="title" onChange={onChange} />
           </div>
           <div className="form-group">
-            <label htmlFor="description" >Description</label>
-            <input type="text" className="form-control" value={note.edescription} id="edescription" name='edescription' placeholder="Description" onChange={onChange} />
-          </div>
-          <div className="form-group">
             <label htmlFor="description" >Tag</label>
             <input type="text" className="form-control" value={note.etag} id="etag" name='etag' placeholder="tag" onChange={onChange}/>
+          </div>
+          <div className="form-group">
+            <label htmlFor="description" >Description</label>
+            <input type="text" className="form-control" value={note.edescription} id="edescription" name='edescription' placeholder="Description" onChange={onChange} />
           </div>
         </form>
       </div>
@@ -73,7 +73,7 @@ function Notes(props) {
   </div>
 </div>
       <div className="row my-3">
-        <h2>Your Notes</h2>
+        <h1><span style={{ "color" : "white"}}>Your Notes</span></h1>
         <div className='container'>
         {notes.length === 0 && "No notes to display"}
         </div>

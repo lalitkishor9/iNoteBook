@@ -9,7 +9,7 @@ export default function About() {
   <div className="accordion-item">
     <h2 className="accordion-header" id="headingOne">
       <button  className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-        About creater
+        <u>About creater</u>
       </button>
     </h2>
     <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
@@ -37,10 +37,10 @@ export default function About() {
       </div>
     </div>
   </div>
-  <div className="accordion-item">
+  <div className="accordion-item mb-5" >
     <h2 className="accordion-header" id="headingTwo">
       <button  className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-        About web-app
+        <u>About web-app</u>
       </button>
     </h2>
     <div id="collapseTwo" className="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">

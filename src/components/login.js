@@ -32,50 +32,42 @@ export const Login =  (props) => {
   }
   return (
     <>
-    <section className="vh-100">
-  <div className="container py-5 h-100">
-    <div className="row d-flex align-items-center justify-content-center h-100">
-      <div className="col-md-8 col-lg-7 col-xl-6">
-        <img src={process.env.PUBLIC_URL + '/signup.svg'}
-          className="img-fluid" alt="Phone image"/>
-      </div>
-      <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-        <div className="card bg-dark text-white " style={{"borderRadius": "1rem;"}}>
-          <div className="card-body p-5 text-center ">
-        <form onSubmit={handleSubmit}>
-
-            <div className="mb-md-5 mt-md-4 pb-5">
-
-              <h2 className="fw-bold mb-2 text-uppercase">LOGIN</h2>
-              <p className="text-white-50 mb-5">Please enter your login and password!</p>
-
-              <div className="form-outline form-white mb-4">
-                <input type="email" className="form-control form-control-lg" onChange={onChange} id="email" name='email' aria-describedby="emailHelp" value={credentials.email} placeholder="Enter email" />
-                <label className="form-label"  htmlFor="typeEmailX">Email</label>
-              </div>
-
-              <div className="form-outline form-white mb-4">
-                <input type="password" className="form-control form-control-lg" onChange={onChange} id="password" name='password' value={credentials.password} placeholder="Password" />
-                <label className="form-label" htmlFor="typePasswordX">Password</label>
-              </div>
-
-              <button className="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
-            </div>
-
-            <div>
-              <p className="mb-0">Don't have an account? <Link to="/signup" className=" fw-bold">Sign Up</Link>
-              </p>
-            </div>
-
-        </form>
-          </div>
-        </div>
-
-      </div>
-    </div>
+    
+<div className="container ">
+      <div class="row">
+  <div class="col-sm-8">
+  <img className='img-fluid' src={process.env.PUBLIC_URL + '/signup.svg'} alt="book"  />
   </div>
-</section>
+  <div class="bg-dark col-sm-4" style={{"borderRadius": "1rem"}}>
+<div className="mb-md-5 mt-md-4 pb-5 text-center">
 
+  <h2 className="fw-bold mb-2 text-uppercase text-center text-light">LOGIN</h2>
+  <p className="text-white-50 mb-5 text-center">Please enter your Email and password!</p>
+  
+  <form onSubmit={handleSubmit}>
+  
+  <div className="form-outline form-white mb-4 mx-4">
+    <input type="email" className="form-control form-control-lg" onChange={onChange} id="email" name='email' aria-describedby="emailHelp" value={credentials.email} placeholder="Enter email" />
+    <label className="form-label text-light"  htmlFor="typeEmailX">Email</label>
+  </div>
+
+  <div className="form-outline form-white mb-4 mx-4">
+    <input  type="password" className="form-control form-control-lg" onChange={onChange} id="password" name='password' value={credentials.password} placeholder="Password"/>
+    <label className="form-label text-light" htmlFor="password">Password</label>
+  </div>
+  <div>
+
+  <button className="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
+  </div>
+  <div >
+    <p className="mb-0 text-light " style={{"marginTop" : "35px"}}>Don't have an account? <Link to="/signup" className=" fw-bold">Sign Up</Link>
+    </p>
+  </div>
+</form>
+</div>
+  </div>
+</div> 
+</div>
       {/* 
       INITIAL CODE
       <form onSubmit={handleSubmit}>

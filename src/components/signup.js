@@ -33,50 +33,40 @@ export const Signup = (props) => {
   }
 
   return (
-    <div >
-      <section className="vh-100">
-  <div className="container py-5 h-100">
-    <div className="row d-flex align-items-center justify-content-center h-100">
-      <div className="col-md-8 col-lg-7 col-xl-6">
-        <img src={process.env.PUBLIC_URL + '/signup.svg'}
-          className="img-fluid" alt="Phone image"/>
-      </div>
-      <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-        <div className="card bg-dark text-white " style={{"borderRadius": "1rem"}}>
-          <div className="card-body p-5 text-center ">
-        <form onSubmit={handleSubmit}>
 
-            <div className="mb-md-5 mt-md-4 pb-5">
-
-              <h2 className="fw-bold mb-2 text-uppercase">SIGNUP</h2>
-              <p className="text-white-50 mb-5">Please create your account!</p>
-                    
-              <div className="form-outline form-white mb-4">
-              <input type="text" className="form-control form-control-lg" id="name" name="name" onChange={onChange} aria-describedby="emailHelp" placeholder="Enter Name" />
-                      <label className="form-label" htmlFor="form3Example1">Name</label>
-              </div>
-              <div className="form-outline form-white mb-4">
-                <input type="email" className="form-control form-control-lg" id="email" name="email" onChange={onChange} aria-describedby="emailHelp" placeholder="Enter email" />
-                <label className="form-label" htmlFor="typeEmailX">Email</label>
-              </div>
-
-              <div className="form-outline form-white mb-4">
-                <input type="password" className="form-control form-control-lg" id="password" name="password" onChange={onChange} placeholder="Set Password" required minLength={5}/>
-                <label className="form-label" htmlFor="typePasswordX">Password</label>
-              </div>
-
-              <button className="btn btn-outline-light btn-lg px-5" type="submit">Sign up</button>
-            </div>
-
-        </form>
-          </div>
-        </div>
-
-      </div>
-    </div>
+ <div className="container ">
+      <div class="row">
+  <div class="col-sm-8">
+  <img className='img-fluid' src={process.env.PUBLIC_URL + '/signup.svg'} alt="book"  />
   </div>
-</section>
+  <div class="bg-dark col-sm-4" style={{"borderRadius": "1rem"}}>
+<div className="mb-md-5 mt-md-4 pb-5 text-center">
 
+  <h2 className="fw-bold mb-2 text-uppercase text-center text-light">SIGNUP</h2>
+  <p className="text-white-50 mb-5 text-center">Please create your account!</p>
+  
+  <form onSubmit={handleSubmit}>
+
+  <div className="form-outline form-white mb-4 mx-4">
+        <input type="text" className="form-control form-control-lg" id="name" name="name" onChange={onChange} aria-describedby="emailHelp" placeholder="Enter Name"/>
+        <label className="form-label text-light" htmlFor="name">Name</label>
+  </div>
+  
+  <div className="form-outline form-white mb-4 mx-4">
+    <input type="email" className="form-control form-control-lg" id="email" name="email" onChange={onChange} aria-describedby="emailHelp" placeholder="Enter email" />
+    <label className="form-label text-light"  htmlFor="typeEmailX">Email</label>
+  </div>
+
+  <div className="form-outline form-white mb-4 mx-4">
+    <input  type="password" className="form-control form-control-lg" id="password" name="password" onChange={onChange} placeholder="Enter Password" required minLength={5}/>
+    <label className="form-label text-light" htmlFor="password">Password</label>
+  </div>
+
+  <button className="btn btn-outline-light btn-lg px-5" type="submit">Signup</button>
+</form>
+</div>
+  </div>
+</div> 
 
       {/* 
       INITIAL CODE
