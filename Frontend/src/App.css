@@ -8,3 +8,6 @@ background: #eee;
 #root{
     background-image: linear-gradient(to right, #3c405a, #DD2476);
 }
+html{
+    background-image: linear-gradient(to right, #3c405a, #DD2476);
+}
