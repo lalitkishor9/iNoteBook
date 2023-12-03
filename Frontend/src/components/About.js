@@ -1,5 +1,7 @@
 import React from 'react'
 
+
+//This is all about Lalit Kishor and Application
 export default function About() {
     
   return (
@@ -26,7 +28,6 @@ export default function About() {
           <ul>
             <li>React.js</li>
             <li>Node.js</li>
-            <li>Django</li>
             <li>Express.js</li>
             <li>MongoDb</li>
             <li>Mongooes</li>

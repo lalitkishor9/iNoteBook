@@ -27,9 +27,13 @@ function App() {
           <Alert alert = {alert}/>
           <div className="container">
             <Routes>
+              //Route for home component
               <Route exact path="/" element={<Home showAlert={showAlert}/>}></Route>
+              //Route for About component
               <Route exact path="/about" element={<About />}></Route>
+              //Route for Login component
               <Route exact path="/login" element={<Login showAlert={showAlert}/>}></Route>
+              //Route for Signup component
               <Route exact path="/signup" element={<Signup showAlert={showAlert}/>}></Route>
             </Routes>
           </div>

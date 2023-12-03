@@ -68,20 +68,7 @@ export const Login =  (props) => {
   </div>
 </div> 
 </div>
-      {/* 
-      INITIAL CODE
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="email">Email address</label>
-          <input type="email" className="form-control" onChange={onChange} id="email" name='email' aria-describedby="emailHelp" value={credentials.email} placeholder="Enter email"/>
-          <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input type="password" className="form-control" onChange={onChange} id="password" name='password' value={credentials.password} placeholder="Password"/>
-        </div>
-        <button type="submit" className="btn btn-primary" >Submit</button>
-      </form> */}
+      
     </>
   )
 }
