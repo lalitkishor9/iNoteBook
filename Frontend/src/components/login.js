@@ -62,7 +62,7 @@ export const Login =  (props) => {
   <div >
     <p className="mb-0 text-light " style={{"marginTop" : "35px"}}>Don't have an account? <Link to="/signup" className=" fw-bold">Sign Up</Link>
     </p>
-    <p className="mb-0 text-light " style={{"marginTop" : "35px"}}>Don't remember password? <Link to="/forgotPassword" className=" fw-bold">Reset Password</Link>
+    <p className="mb-0 text-light " style={{"marginTop" : "35px"}}>Don't remember password? <Link to="/resetpassword" className=" fw-bold">Reset Password</Link>
     </p>
   </div>
 </form>

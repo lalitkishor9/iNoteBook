@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import baseUrl from '../../utils';
 
-
 const SendEmailContext = createContext();
 
 export const useSendEmail = () => {
@@ -37,7 +36,7 @@ export const SendEmailProvider = ({ children }) => {
 
   const updatePassword = async (email, password) => {
     try {
-      const response = await fetch('/api/auth/updatepassword', {
+      const response = await fetch(`${host}/api/auth/updatepassword`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,8 +47,13 @@ export const SendEmailProvider = ({ children }) => {
       if (!response.ok) {
         throw new Error('Failed to update password');
       }
-
-      console.log('Password updated successfully');
+      const data = await response.json();
+      console.log(data.success);
+      if(data.success){
+        console.log('Password updated successfully');
+      }
+      else
+      throw console.error("not reseted");
     } catch (error) {
       console.error('Error updating password:', error.message);
       // Handle error as needed, such as displaying an error message to the user

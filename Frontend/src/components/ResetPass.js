@@ -36,8 +36,8 @@ function ResetPass() {
     e.preventDefault();
     try {
       await updatePassword(email, newPassword);
-      history('/login');
-      console.log('Password changed successfully');
+        history('/login');
+        console.log('Password changed successfully');
     } catch (error) {
       console.error('Error changing password:', error.message);
     }

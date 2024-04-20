@@ -37,7 +37,7 @@ function App() {
               //Route for Signup component
               <Route exact path="/signup" element={<Signup showAlert={showAlert}/>}></Route>
               //Route for Signup component
-              <Route exact path="/forgotPassword" element={<ResetPass/>}></Route>
+              <Route exact path="/resetpassword" element={<ResetPass/>}></Route>
               
             </Routes>
           </div>
