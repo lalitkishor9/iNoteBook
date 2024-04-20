@@ -34,11 +34,11 @@ export const Login =  (props) => {
     <>
     
 <div className="container ">
-      <div class="row">
-  <div class="col-sm-8">
+      <div className="row">
+  <div className="col-sm-8">
   <img className='img-fluid' src={process.env.PUBLIC_URL + '/signup.svg'} alt="book"  />
   </div>
-  <div class="bg-dark col-sm-4" style={{"borderRadius": "1rem"}}>
+  <div className="bg-dark col-sm-4" style={{"borderRadius": "1rem"}}>
 <div className="mb-md-5 mt-md-4 pb-5 text-center">
 
   <h2 className="fw-bold mb-2 text-uppercase text-center text-light">LOGIN</h2>
@@ -61,6 +61,8 @@ export const Login =  (props) => {
   </div>
   <div >
     <p className="mb-0 text-light " style={{"marginTop" : "35px"}}>Don't have an account? <Link to="/signup" className=" fw-bold">Sign Up</Link>
+    </p>
+    <p className="mb-0 text-light " style={{"marginTop" : "35px"}}>Don't remember password? <Link to="/forgotPassword" className=" fw-bold">Reset Password</Link>
     </p>
   </div>
 </form>

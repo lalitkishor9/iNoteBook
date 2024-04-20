@@ -36,11 +36,11 @@ export const Signup = (props) => {
   return (
 
  <div className="container ">
-      <div class="row">
-  <div class="col-sm-8">
+      <div className="row">
+  <div className="col-sm-8">
   <img className='img-fluid' src={process.env.PUBLIC_URL + '/signup.svg'} alt="book"  />
   </div>
-  <div class="bg-dark col-sm-4" style={{"borderRadius": "1rem"}}>
+  <div className="bg-dark col-sm-4" style={{"borderRadius": "1rem"}}>
 <div className="mb-md-5 mt-md-4 pb-5 text-center">
 
   <h2 className="fw-bold mb-2 text-uppercase text-center text-light">SIGNUP</h2>

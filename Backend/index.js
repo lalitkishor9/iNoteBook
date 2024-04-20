@@ -12,7 +12,7 @@ app.use(express.json());
 
 //Available Routes
 app.get('/', (req, res) => {
-  res.send('Hello Lali!')
+  res.send('Hello Welcome to the iNoteBook server!')
 })
 
 /*

@@ -8,6 +8,7 @@ import NoteState from "./context/notes/noteState";
 import Alert from "./components/Alert";
 import { Login } from "./components/login";
 import { Signup } from "./components/signup";
+import ResetPass from "./components/ResetPass";
 function App() {
   const [alert, setAlert] = useState(null);
   const showAlert = (message, type) => {
@@ -35,6 +36,9 @@ function App() {
               <Route exact path="/login" element={<Login showAlert={showAlert}/>}></Route>
               //Route for Signup component
               <Route exact path="/signup" element={<Signup showAlert={showAlert}/>}></Route>
+              //Route for Signup component
+              <Route exact path="/forgotPassword" element={<ResetPass/>}></Route>
+              
             </Routes>
           </div>
         </Router>

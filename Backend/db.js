@@ -3,7 +3,7 @@ require('dotenv').config();
 
 
 const mongooseURI =process.env.DB_URI;
-console.log(mongooseURI);
+// console.log(mongooseURI);
 
 const connectToMongo = ()=>{
 

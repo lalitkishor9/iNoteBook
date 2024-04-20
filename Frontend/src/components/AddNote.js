@@ -1,6 +1,5 @@
 import React,{useContext, useState} from 'react'
 import contextValue from "../context/notes/noteContext"
-
 function AddNote(props) {
     const context = useContext(contextValue);
   const { addNote} = context;
@@ -18,11 +17,11 @@ function AddNote(props) {
   
   return (
     <div className="container ">
-      <div class="row">
-  <div class="col-sm-8">
+      <div className="row">
+  <div className="col-sm-8">
   <img className='img-fluid' src={process.env.PUBLIC_URL + '/book3.png'} alt="book"  />
   </div>
-    <div class=" col-sm-4"  style={{"borderRadius": "1rem" ,"backgroundColor" : "#384494"}}>
+    <div className=" col-sm-4"  style={{"borderRadius": "1rem" ,"backgroundColor" : "#384494"}}>
         <form >
 
           <div className="mb-md-5 mt-md-4 pb-5 ">

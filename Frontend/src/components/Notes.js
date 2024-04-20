@@ -23,22 +23,22 @@ function Notes(props) {
   const updateNote = (CurrentNote) => {
         ref.current.click();
         setNote({id : CurrentNote._id,etitle:CurrentNote.title, edescription: CurrentNote.description, etag:CurrentNote.tag});
-      };
-      const handleClick = (e)=>{
-        // console.log("Updating the note...", note);
-        editNote(note.id,note.etitle,note.edescription,note.etag);
-        refClose.current.click();
-        props.showAlert("Updated Successfully", "success");
-      }
-      const onChange = (e)=>{
-        setNote({...note,[e.target.name]:e.target.value})
-      }
+  };
+  const handleClick = (e)=>{
+    // console.log("Updating the note...", note);
+    editNote(note.id,note.etitle,note.edescription,note.etag);
+    refClose.current.click();
+    props.showAlert("Updated Successfully", "success");
+  }
+  const onChange = (e)=>{
+    setNote({...note,[e.target.name]:e.target.value})
+  }
   return (
     <>
       <AddNote showAlert={props.showAlert}/>
       <button type="button" ref = {ref} className="btn d-none btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
+        Launch demo modal
+      </button>
 
       <div className="modal fade" id="exampleModal"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div className="modal-dialog" role="document">
@@ -72,12 +72,12 @@ function Notes(props) {
     </div>
   </div>
 </div>
-      <div className="row my-3">
+      <div className="row my-3"> 
         <h1><span style={{ "color" : "white"}}>Your Notes</span></h1>
         <div className='container'>
         {notes.length === 0 && "No notes to display"}
         </div>
-        {notes.map((note) => {
+        {notes.length > 0 &&  notes.map((note) => {
           return (
             <Noteitem key={note._id} updateNote={updateNote} showAlert={props.showAlert} notes={note} />
           );

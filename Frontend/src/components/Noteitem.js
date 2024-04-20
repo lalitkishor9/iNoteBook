@@ -6,12 +6,12 @@ function Noteitem(props) {
   const {deleteNote} = context;
   const { notes, updateNote } = props;
   return (
-    <div class="col-12 col-sm-6 col-lg-3 my-4">
-    <div class="card " style={{"backgroundColor" : "#e585b0"}}>
-      <div class="card-body">
-        <h4 class="card-title">{notes.title}</h4>
-        <h6 class="card-subtitle mb-2">{notes.tag}</h6>
-        <p class="card-text">{notes.description}</p>
+    <div className="col-12 col-sm-6 col-lg-3 my-4">
+    <div className="card " style={{"backgroundColor" : "#e585b0"}}>
+      <div className="card-body">
+        <h4 className="card-title">{notes.title}</h4>
+        <h6 className="card-subtitle mb-2">{notes.tag}</h6>
+        <p className="card-text">{notes.description}</p>
           <div className="d-flex flex-row-reverse">
             <i className="fa-regular fa-trash-can fa-xl mx-4 " style={{color:"red"}} onClick={()=>{deleteNote(notes._id); props.showAlert("Deleted Successfully", "success");}} ></i>
             <i className="fa-regular fa-pen-to-square fa-xl " onClick={()=>{updateNote(notes); }} style={{color:"blue"}} ></i>
