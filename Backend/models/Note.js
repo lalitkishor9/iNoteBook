@@ -16,12 +16,14 @@ const NotesSchema = new Schema({
   },
   tag:{
     type: String,
-    default: "General"
+    default: "General",
+    trim: true,
+    maxlength: 40
   },
-  Date:{
-    type: Date,
-    default: Date.now
+  pinned:{
+    type: Boolean,
+    default: false
   }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Notes', NotesSchema);

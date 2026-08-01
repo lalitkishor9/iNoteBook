@@ -1,4 +1,22 @@
-# iNotebook - Your Notes on the Go
+# Notely (formerly iNotebook) — Your ideas, thoughtfully organized
+
+Notely is a full-stack note-taking workspace designed to make capturing and revisiting ideas feel calm and effortless. It pairs a polished React experience with a secure Express and MongoDB API.
+
+## What makes this version interview-ready
+
+- A responsive, original workspace UI with dashboard metrics, search, category filters, sorting, pinned notes, empty states, and polished note compose/edit flows.
+- User-scoped notes with server-side search/filter support, validation, automatic timestamps, and pinning.
+- JWT-based authentication with seven-day expiry and environment-managed secrets.
+- Password recovery using short-lived, hashed server-side reset codes; codes are never returned to the browser.
+- Clear loading and error feedback across all important actions.
+
+## Local setup
+
+1. Copy `Backend/.env.example` to `Backend/.env` and add your MongoDB connection string, email credentials, and a long random `JWT_SECRET`.
+2. Install dependencies in both `Frontend` and `Backend` with `npm install`.
+3. Run the backend from `Backend` using `npm start` and the frontend from `Frontend` using `npm start`.
+
+For deployment, configure the same environment variables in your hosting provider. In particular, `JWT_SECRET` is required for sign-up, login, and protected note routes.
 
 ## Visit the App
 [Click here to visit the iNotebook React App](https://i-notebooklalit.vercel.app/)

@@ -1,93 +1,23 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import contextValue from "../context/notes/noteContext";
-import Noteitem from "./Noteitem";
-import AddNote from "./AddNote";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import NoteContext from "../context/notes/noteContext";
 
-function Notes(props) {
-  const context = useContext(contextValue);
-  let history = useNavigate();
-  const { notes, getNotes, editNote } = context;
-  useEffect(() => {
-    if(localStorage.getItem('token')){
-    getNotes();
-    }
-    else{
-      history('/login');
-    }
-    // eslint-disable-next-line
-  }, []);
-  const ref = useRef(null);
-  const refClose = useRef(null);
-  const [note, setNote] = useState({id:"", etitle:"", edescription:"", etag:"default"});
-  const updateNote = (CurrentNote) => {
-        ref.current.click();
-        setNote({id : CurrentNote._id,etitle:CurrentNote.title, edescription: CurrentNote.description, etag:CurrentNote.tag});
-  };
-  const handleClick = (e)=>{
-    // console.log("Updating the note...", note);
-    editNote(note.id,note.etitle,note.edescription,note.etag);
-    refClose.current.click();
-    props.showAlert("Updated Successfully", "success");
-  }
-  const onChange = (e)=>{
-    setNote({...note,[e.target.name]:e.target.value})
-  }
-  return (
-    <>
-      <AddNote showAlert={props.showAlert}/>
-      <button type="button" ref = {ref} className="btn d-none btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Launch demo modal
-      </button>
+const blank = { title:"", description:"", tag:"General" };
+const relativeDate = date => { const days = Math.floor((Date.now() - new Date(date)) / 86400000); return days === 0 ? "Today" : days === 1 ? "Yesterday" : `${days} days ago`; };
 
-      <div className="modal fade" id="exampleModal"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div className="modal-dialog" role="document">
-    <div className="modal-content">
-      <div className="modal-header">
-        <h5 className="modal-title" id="exampleModalLabel">Edit Note</h5>
-        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div className="modal-body">
-      <form className=" my-3">
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <input type="text" className="form-control" value={note.etitle} id="etitle" aria-describedby="emailHelp" name='etitle' placeholder="title" onChange={onChange} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="description" >Tag</label>
-            <input type="text" className="form-control" value={note.etag} id="etag" name='etag' placeholder="tag" onChange={onChange}/>
-          </div>
-          <div className="form-group">
-            <label htmlFor="description" >Description</label>
-            <input type="text" className="form-control" value={note.edescription} id="edescription" name='edescription' placeholder="Description" onChange={onChange} />
-          </div>
-        </form>
-      </div>
-      <div className="modal-footer">
-        <button type="button" ref = {refClose} className="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" disabled={note.etitle.length < 5 || note.edescription.length < 5} onClick={handleClick} className="btn btn-primary">Update Note</button>
-      </div>
-    </div>
-  </div>
-</div>
-      <div className="row my-3"> 
-        <h1><span style={{ "color" : "white"}}>Your Notes</span></h1>
-        <div className='container'>
-        {notes.length === 0 && "No notes to display"}
-        </div>
-        {notes.length > 0 &&  notes.map((note) => {
-          return (
-            <Noteitem key={note._id} updateNote={updateNote} showAlert={props.showAlert} notes={note} />
-          );
-        })}
-      </div>
-    </>
-  );
+export default function Notes({ showAlert }) {
+  const { notes, loading, getNotes, addNote, editNote, deleteNote, togglePin } = useContext(NoteContext);
+  const navigate = useNavigate(); const [search, setSearch] = useState(""); const [tag, setTag] = useState("All"); const [sort, setSort] = useState("updated"); const [editor, setEditor] = useState(null); const [saving, setSaving] = useState(false);
+  useEffect(() => { if (!localStorage.getItem("token")) navigate("/login"); else getNotes().catch(error => showAlert(error.message, "danger")); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const tags = useMemo(() => ["All", ...new Set(notes.map(note => note.tag || "General"))], [notes]);
+  const visible = useMemo(() => notes.filter(note => { const text = `${note.title} ${note.description} ${note.tag}`.toLowerCase(); return text.includes(search.toLowerCase()) && (tag === "All" || (note.tag || "General") === tag); }).sort((a,b) => sort === "title" ? a.title.localeCompare(b.title) : sort === "created" ? new Date(b.createdAt || b.Date) - new Date(a.createdAt || a.Date) : Number(b.pinned) - Number(a.pinned) || new Date(b.updatedAt || b.Date) - new Date(a.updatedAt || a.Date)), [notes, search, tag, sort]);
+  const submit = async event => { event.preventDefault(); setSaving(true); try { if (editor._id) await editNote(editor._id, editor.title, editor.description, editor.tag); else await addNote(editor.title, editor.description, editor.tag); setEditor(null); showAlert(editor._id ? "Note updated" : "Note created"); } catch(error) { showAlert(error.message, "danger"); } finally { setSaving(false); } };
+  const remove = async note => { if (!window.confirm(`Delete “${note.title}”?`)) return; try { await deleteNote(note._id); showAlert("Note deleted"); } catch (error) { showAlert(error.message, "danger"); } };
+  return <main className="page"><section className="workspace-head"><div><span className="eyebrow">Personal workspace</span><h1 className="title">Ideas, kept close.</h1><p className="subtitle">A calm home for your notes, thoughts and next big thing.</p></div><button className="button button-primary" onClick={() => setEditor(blank)}>＋ New note</button></section>
+    <section className="stats"><article className="stat"><span>All notes</span><strong>{notes.length}</strong></article><article className="stat"><span>Pinned ideas</span><strong>{notes.filter(note => note.pinned).length}</strong></article><article className="stat"><span>Categories</span><strong>{Math.max(0, tags.length - 1)}</strong></article></section>
+    <section className="toolbar"><label className="search"><span>⌕</span><input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search your thoughts..." /></label><select className="select" value={sort} onChange={e => setSort(e.target.value)}><option value="updated">Recently updated</option><option value="created">Recently created</option><option value="title">Title A–Z</option></select></section>
+    <div className="tag-row">{tags.map(item => <button key={item} onClick={() => setTag(item)} className={`tag-filter ${tag === item ? "selected" : ""}`}>{item}</button>)}</div>
+    {loading ? <div className="empty"><div className="empty-icon">◌</div><p>Gathering your notes…</p></div> : visible.length ? <section className="notes-grid">{visible.map(note => <article className={`note-card ${note.pinned ? "pinned" : ""}`} key={note._id}><div className="card-actions"><button title="Pin note" className={`icon-button ${note.pinned ? "pin" : ""}`} onClick={() => togglePin(note).catch(error => showAlert(error.message,"danger"))}>⌖</button><button title="Edit note" className="icon-button" onClick={() => setEditor(note)}>✎</button><button title="Delete note" className="icon-button" onClick={() => remove(note)}>×</button></div><span className="tag">{note.tag || "General"}</span><h3>{note.title}</h3><p>{note.description}</p><div className="note-meta"><span>{relativeDate(note.updatedAt || note.Date)}</span>{note.pinned && <span>pinned</span>}</div></article>)}</section> : <section className="empty"><div className="empty-icon">✦</div><h2>{notes.length ? "Nothing matches that search" : "Your notebook is ready"}</h2><p>{notes.length ? "Try another word or category." : "Create your first note and make this space yours."}</p>{!notes.length && <button className="button button-primary" onClick={() => setEditor(blank)}>Create a note</button>}</section>}
+    {editor && <div className="modal-backdrop" role="presentation"><form className="note-modal" onSubmit={submit}><div className="modal-head"><h2>{editor._id ? "Refine note" : "Capture an idea"}</h2><button type="button" className="icon-button" onClick={() => setEditor(null)}>×</button></div><div className="field"><label htmlFor="note-title">Title</label><input id="note-title" autoFocus required minLength="3" value={editor.title} onChange={e => setEditor({ ...editor, title:e.target.value })} placeholder="Give this thought a name" /></div><div className="field"><label htmlFor="note-tag">Category</label><input id="note-tag" value={editor.tag} onChange={e => setEditor({ ...editor, tag:e.target.value })} placeholder="e.g. Work, Ideas, Personal" /></div><div className="field"><label htmlFor="note-description">Your note</label><textarea id="note-description" required minLength="5" value={editor.description} onChange={e => setEditor({ ...editor, description:e.target.value })} placeholder="Start writing…" /></div><div className="form-actions"><button type="button" className="button button-quiet" onClick={() => setEditor(null)}>Cancel</button><button disabled={saving} className="button button-primary">{saving ? "Saving…" : "Save note"}</button></div></form></div>}
+  </main>;
 }
-
-export default Notes;
-
-
-

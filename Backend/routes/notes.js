@@ -7,8 +7,12 @@ const { query, validationResult, body } = require('express-validator');
 // ROUTE 1: Get All notes using: GET "/api/notes/fetchallnotes" . Login Required
 router.get('/fetchallnotes',fetchUser, async(req,res)=>{
     try {
-        const notes = await Note.find({user: req.user.id});
-        res.json(notes);
+        const search = (req.query.search || '').trim();
+        const filter = { user: req.user.id };
+        if (req.query.tag) filter.tag = req.query.tag;
+        if (search) filter.$or = [{ title: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }];
+        const notes = await Note.find(filter).sort({ pinned: -1, updatedAt: -1 });
+        res.json({ notes });
     } catch (error) {
         console.error(error.message);
       res.status(500).send("Internal Server error");
@@ -44,15 +48,23 @@ router.post('/addnote',fetchUser, [
 })
 
 // ROUTE 3: Update an existing note: PUT "/api/notes/updatenote" . Login Required
-router.put('/updatenote/:id',fetchUser,async(req,res)=>{
+router.put('/updatenote/:id',fetchUser, [
+    body('title').optional().isLength({min:3}).trim(),
+    body('description').optional().isLength({min:5}).trim(),
+    body('tag').optional().isLength({max:40}).trim(),
+    body('pinned').optional().isBoolean()
+], async(req,res)=>{
     try {
-        const {title, description,tag} = req.body;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+        const {title, description,tag,pinned} = req.body;
 
         //Create a newNote object
         const newNote = {};
         if(title) {newNote.title = title}
         if(description) {newNote.description = description}
         if(tag) {newNote.tag = tag}
+        if(typeof pinned === 'boolean') {newNote.pinned = pinned}
 
         //Find the note to be updated and update it
         let note = await Note.findById(req.params.id);

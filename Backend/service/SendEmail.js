@@ -4,8 +4,8 @@ const otpGenerator = require('otp-generator')
 const subject = "Reset Password Code for Your Account";
 
 
-const sendMail = async (recipient) => {
-  const resetPasswordCode = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
+const sendMail = async (recipient, resetPasswordCode) => {
+  resetPasswordCode = resetPasswordCode || otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
   const transporter = nodemailer.createTransport({
     service: 'Gmail', // Use your email service provider
     auth: {

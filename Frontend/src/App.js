@@ -9,43 +9,15 @@ import Alert from "./components/Alert";
 import { Login } from "./components/login";
 import { Signup } from "./components/signup";
 import ResetPass from "./components/ResetPass";
-function App() {
-  const [alert, setAlert] = useState(null);
-  const showAlert = (message, type) => {
-    setAlert({
-      msg: message,
-      type: type,
-    });
-    setTimeout(() => {
-      setAlert(null);
-    }, 1500);
-  };
-  return (
-    <>
-      <NoteState>
-        <Router>
-          <Navbar />
-          <Alert alert = {alert}/>
-          <div className="container">
-            <Routes>
-              //Route for home component
-              <Route exact path="/" element={<Home showAlert={showAlert}/>}></Route>
-              //Route for About component
-              <Route exact path="/about" element={<About />}></Route>
-              //Route for Login component
-              <Route exact path="/login" element={<Login showAlert={showAlert}/>}></Route>
-              //Route for Signup component
-              <Route exact path="/signup" element={<Signup showAlert={showAlert}/>}></Route>
-              //Route for Signup component
-              <Route exact path="/resetpassword" element={<ResetPass/>}></Route>
-              
-            </Routes>
-          </div>
-        </Router>
-  
-      </NoteState>
-    </>
-  );
-}
 
-export default App;
+export default function App() {
+  const [alert, setAlert] = useState(null);
+  const showAlert = (msg, type = "success") => { setAlert({ msg, type }); window.setTimeout(() => setAlert(null), 2800); };
+  return <NoteState><Router><div className="app-shell"><Navbar /><Alert alert={alert} /><Routes>
+    <Route path="/" element={<Home showAlert={showAlert} />} />
+    <Route path="/about" element={<About />} />
+    <Route path="/login" element={<Login showAlert={showAlert} />} />
+    <Route path="/signup" element={<Signup showAlert={showAlert} />} />
+    <Route path="/resetpassword" element={<ResetPass showAlert={showAlert} />} />
+  </Routes></div></Router></NoteState>;
+}
