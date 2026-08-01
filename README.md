@@ -12,9 +12,10 @@ Notely is a full-stack note-taking workspace designed to make capturing and revi
 
 ## Local setup
 
-1. Copy `Backend/.env.example` to `Backend/.env` and add your MongoDB connection string, email credentials, and a long random `JWT_SECRET`.
-2. Install dependencies in both `Frontend` and `Backend` with `npm install`.
-3. Run the backend from `Backend` using `npm start` and the frontend from `Frontend` using `npm start`.
+1. Use Node.js 24 or later. With nvm installed, run `nvm use` from the repository root.
+2. Copy `Backend/.env.example` to `Backend/.env` and add your MongoDB connection string, email credentials, and a long random `JWT_SECRET`.
+3. Install dependencies in both `Frontend` and `Backend` with `npm install`.
+4. Run the backend from `Backend` using `npm start` and the frontend from `Frontend` using `npm start`.
 
 For deployment, configure the same environment variables in your hosting provider. In particular, `JWT_SECRET` is required for sign-up, login, and protected note routes.
 
