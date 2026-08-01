@@ -6,8 +6,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const fetchUser = require("../middleware/fetchUser");
 const {sendMail} = require("../service/SendEmail");
+const crypto = require('crypto');
 
-const JWT_SECRET = 'lalitkishor$21';
+const JWT_SECRET = process.env.JWT_SECRET;
+const signToken = user => jwt.sign({ user: { id: user.id } }, JWT_SECRET, { expiresIn: '7d' });
 
 
 // ROUTE 1: Create a User using: POST "/api/auth/createuser". No login required
@@ -16,6 +18,7 @@ router.post('/createUser', [
     body('email', 'Enter a valid email').isEmail(),
     body('password','password must be atleast 5 characters').isLength({min:6}),
 ],async (req,res)=>{
+  if (!JWT_SECRET) return res.status(500).json({ success: false, error: 'Server authentication is not configured' });
   let success = false;
   //if there is an error send bad request
     const errors = validationResult(req);
@@ -35,12 +38,7 @@ router.post('/createUser', [
       password: secPass,
       email: req.body.email,
     })
-    const data = {
-      user:{
-        "id":user.id
-      }
-    }
-    const authToken = jwt.sign(data,JWT_SECRET);
+    const authToken = signToken(user);
     success = true;
     res.json({ success, authToken});
   } catch (error) {
@@ -58,6 +56,7 @@ router.post('/login', [
   body('email', 'Enter a valid email').isEmail(),
   body('password','password can not be blank').exists(),
 ],async (req,res)=>{
+  if (!JWT_SECRET) return res.status(500).json({ success: false, error: 'Server authentication is not configured' });
   let success = false;
   const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -79,12 +78,7 @@ router.post('/login', [
         return res.status(400).json({success, error: "Please try to login with correct credentials"});
       }
 
-      const data = {
-        user:{
-          "id":user.id
-        }
-      }
-      const authToken = jwt.sign(data,JWT_SECRET);
+      const authToken = signToken(user);
       success = true;
       res.json({success, authToken});
     } catch (error) {
@@ -124,9 +118,13 @@ router.post('/userverification', [
       return res.status(400).json({ error: "User doesn't exist" });
     }
 
-    const response = await sendMail(email);
+    const resetPasswordCode = crypto.randomInt(100000, 999999).toString();
+    user.passwordResetToken = crypto.createHash('sha256').update(resetPasswordCode).digest('hex');
+    user.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+    await user.save();
+    const response = await sendMail(email, resetPasswordCode);
     if (response.success) { // Check if the email was sent successfully
-      res.json({ resetPasswordCode: response.resetPasswordCode }); // Respond with the reset password code
+      res.json({ success: true, message: 'A reset code has been sent to your email.' });
     } else {
       res.status(500).json({ error: "Failed to send reset password email" });
     }
@@ -140,31 +138,29 @@ router.post('/userverification', [
 // ROUTE 5: Reset the user password: POST "/api/auth/updatepassword" . No Login required
 router.post('/updatepassword', [
   body('email', 'Enter a valid email').isEmail(),
-  body('password', 'Password cannot be blank').exists().notEmpty(),
+  body('password', 'Password must be at least 6 characters').isLength({min:6}),
+  body('code', 'Reset code is required').isLength({min:6, max:6}),
 ], async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ success: false, errors: errors.array() });
   }
 
-  const { email, password } = req.body;
+  const { email, password, code } = req.body;
   try {
     const salt = await bcrypt.genSalt(10);
     const secPass = await bcrypt.hash(password, salt);
 
-    let user = await User.findOne({ email });
+    const resetToken = crypto.createHash('sha256').update(code).digest('hex');
+    let user = await User.findOne({ email, passwordResetToken: resetToken, passwordResetExpires: { $gt: Date.now() } });
     if (!user) {
       return res.status(400).json({ success : false, error: "Please try to login with correct credentials" });
     }
 
-    const filter = { email: email }; // Dynamic filter based on request body
-    const update = { password: secPass }; // Update password with the hashed password
-    const result = await User.updateOne(filter, update);
-
-    // if (result.nModified === 0) {
-    //   // Check if no documents were modified
-    //   return res.status(400).json({ success: false, error: "Password update failed" });
-    // }
+    user.password = secPass;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
 
     res.json({ success: true });
   } catch (error) {

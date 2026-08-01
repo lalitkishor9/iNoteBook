@@ -15,6 +15,8 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  passwordResetToken: String,
+  passwordResetExpires: Date,
   timeStamp:{
     type: Date,
     default: Date.now

@@ -1,79 +1,10 @@
-import React from 'react'
+import { Link } from "react-router-dom";
 
-
-//This is all about Lalit Kishor and Application
 export default function About() {
-    
-  return (
-    <div className='container' >
-        <h1 className='my-4'>About Us</h1>
-        <div className="accordion" id="accordionExample">
-  <div className="accordion-item">
-    <h2 className="accordion-header" id="headingOne">
-      <button  className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-        <u>About creater</u>
-      </button>
-    </h2>
-    <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-      <div  className="accordion-body">
-        <strong>Hey! welcome to my website. I am <code>Lalit Kishor</code>. I am a problem solver and passionate of web dev, having knowledge of programming languages like
-        <ul>
-          <li>C++</li>
-          <li>C</li>
-          <li>Python</li>
-          <li>JavaScript</li>
-          <li>TypeScript</li>
-          </ul>
-          and <b>Technologies and Framework</b> like
-          <ul>
-            <li>React.js</li>
-            <li>Node.js</li>
-            <li>Express.js</li>
-            <li>MongoDb</li>
-            <li>Mongooes</li>
-            <li>HTML</li>
-            <li>CSS</li>
-            <li>...</li>
-            </ul> <br/> I am a 3rd year <i>Undergrad</i> student of <code>NIT Agartala</code> . Persuing <i>B.tech</i> in <code>Computer Science and Engineering</code>. <br></br>NO GREAT ACHIEVEMENT YET...</strong> 
-      </div>
-    </div>
-  </div>
-  <div className="accordion-item mb-5" >
-    <h2 className="accordion-header" id="headingTwo">
-      <button  className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-        <u>About web-app</u>
-      </button>
-    </h2>
-    <div id="collapseTwo" className="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-      <div  className="accordion-body">
-     <strong> Welcome to iNotebook </strong><br />
-
-<i>iNotebook is a user-friendly web application that features a secure user authentication system. It enables users to
-effortlessly manage their notes, ensuring that their thoughts and ideas can be captured, edited, and accessed
-anytime, anywhere. Users have the flexibility to edit their existing notes as well as delete ones they no longer need.
-This platform provides a seamless experience for efficient note-taking and organization.
-</i>
-<br /><br />
-<strong>Main Features:-</strong><br /><br />
-
-<strong>User-Friendly Interface:</strong><br />
-iNotebook offers an intuitive and easy-to-navigate user interface, making it accessible for users of all levels of technical expertise.<br /><br />
-<strong>Secure User Authentication:</strong><br />
-A robust authentication system ensures that user data and notes are kept secure and private.<br /><br />
-<strong>Note Creation and Editing:</strong><br />
-Users can effortlessly create new notes and edit them to capture and refine their thoughts and ideas.<br /><br />
-<strong>Cloud Storage:</strong><br />
-iNotebook stores notes securely in the cloud, allowing users to access their notes from any device with an internet connection.<br />
-<br />
-<strong>Note Organization:</strong><br />
-Users can categorize and organize their notes using tags or categories for easy retrieval.<br />
-<br />
-<i>iNotebook boasts a clean and intuitive interface, ensuring ease of use for individuals of all skill levels. It emphasizes speed and efficiency in managing and accessing your notes, allowing you to focus on your work and ideas.</i>
-      </div>
-    </div>
-  </div>
-  
-    </div>
-    </div>
-  )
+  const signedIn = Boolean(localStorage.getItem("token"));
+  return <main className="page about-page">
+    <section className="about-hero"><div><span className="eyebrow">Built for thoughtful work</span><h1 className="title">A calmer place for<br/>ambitious ideas.</h1><p className="about-lead">Notely is a private thinking space that helps you capture a spark, shape it over time, and surface it exactly when it matters.</p><div className="hero-actions"><Link className="button button-primary" to={signedIn ? "/" : "/signup"}>{signedIn ? "Open my notes" : "Create your workspace"}</Link>{!signedIn && <Link className="button button-outline" to="/login">Sign in</Link>}</div></div><aside className="signal-panel" aria-label="Notely product capabilities"><div className="signal-top"><span className="live-dot"></span><span>YOUR THINKING SYSTEM</span><span>01 / 03</span></div><div className="orbit orbit-one"></div><div className="orbit orbit-two"></div><div className="signal-core">✦</div><div className="signal-label label-one">CAPTURE</div><div className="signal-label label-two">FOCUS</div><div className="signal-label label-three">RECALL</div></aside></section>
+    <section className="future-grid"><article><span>01</span><h2>Find the signal</h2><p>Search across titles, ideas, and categories without breaking your flow. Your knowledge stays accessible, never buried.</p></article><article><span>02</span><h2>Make priorities visible</h2><p>Pin the ideas that deserve attention and let recently updated notes naturally rise to the surface.</p></article><article><span>03</span><h2>Own your workspace</h2><p>Your notes are scoped to your account and protected by authentication, so this is a space designed around you.</p></article></section>
+    <section className="builder-card"><div><span className="eyebrow">The person behind Notely</span><h2>Built with curiosity and care.</h2><p>Notely is a full-stack product experiment by Lalit Kishor, combining product thinking, user experience, and secure web engineering.</p></div><div className="builder-signature"><strong>Lalit Kishor</strong><span>SWE @ PayPal</span></div></section>
+  </main>;
 }
