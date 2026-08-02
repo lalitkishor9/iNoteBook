@@ -17,6 +17,13 @@ Notely is a full-stack note-taking workspace designed to make capturing and revi
 3. Install dependencies in both `Frontend` and `Backend` with `npm install`.
 4. Run the backend from `Backend` using `npm start` and the frontend from `Frontend` using `npm start`.
 
+### Environment behavior
+
+- `npm start` in `Frontend` loads `Frontend/.env.development`, so the browser calls `http://localhost:5000`.
+- `npm run build` in `Frontend` loads `Frontend/.env.production`, so the deployed site calls the Vercel API.
+- `Backend/.env` is private and supplies `DB_URI`, `JWT_SECRET`, email credentials, and optionally `PORT`. If `PORT` is unset, Express listens on `5000`.
+- Override either frontend URL locally with an untracked `Frontend/.env.local` file. Never put credentials in frontend environment files because React embeds their `REACT_APP_*` values into the browser bundle.
+
 For deployment, configure the same environment variables in your hosting provider. In particular, `JWT_SECRET` is required for sign-up, login, and protected note routes.
 
 ## Visit the App

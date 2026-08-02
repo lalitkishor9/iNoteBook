@@ -1,5 +1,5 @@
-const baseUrl="https://i-note-book-backend-ten.vercel.app";
-//Just uncomment it, to run it in local 
-// const baseUrl="http://localhost:5000"
+// Create React App reads REACT_APP_* values at build time.
+// .env.development targets the local API; .env.production targets the deployed API.
+const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
-module.exports=baseUrl;
+export default baseUrl;
