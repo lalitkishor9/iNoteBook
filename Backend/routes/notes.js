@@ -3,6 +3,10 @@ const router = express.Router();
 const fetchUser = require("../middleware/fetchUser");
 const Note = require('../models/Note');
 const { query, validationResult, body } = require('express-validator');
+const titleValidation = body('title', 'Title must be 3-100 characters and no more than 12 words')
+  .isLength({ min: 3, max: 100 }).trim()
+  .custom(value => value.split(/\s+/).filter(Boolean).length <= 12);
+const tagValidation = body('tag', 'Context must be 32 characters or fewer').optional().isLength({ max: 32 }).trim();
 
 // ROUTE 1: Get All notes using: GET "/api/notes/fetchallnotes" . Login Required
 router.get('/fetchallnotes',fetchUser, async(req,res)=>{
@@ -21,8 +25,9 @@ router.get('/fetchallnotes',fetchUser, async(req,res)=>{
 
 // ROUTE 2: Add a new note using: POST "/api/notes/addnote" . Login Required
 router.post('/addnote',fetchUser, [
-    body('title','Enter a valid title').isLength({min:3}),
+    titleValidation,
     body('description', 'Enter at least 5 characters in Description').isLength({min: 5}),
+    tagValidation,
 ],async(req,res)=>{
     try {
         
@@ -49,9 +54,9 @@ router.post('/addnote',fetchUser, [
 
 // ROUTE 3: Update an existing note: PUT "/api/notes/updatenote" . Login Required
 router.put('/updatenote/:id',fetchUser, [
-    body('title').optional().isLength({min:3}).trim(),
+    titleValidation.optional(),
     body('description').optional().isLength({min:5}).trim(),
-    body('tag').optional().isLength({max:40}).trim(),
+    tagValidation,
     body('pinned').optional().isBoolean()
 ], async(req,res)=>{
     try {
@@ -79,6 +84,19 @@ router.put('/updatenote/:id',fetchUser, [
     } catch (error) {
         console.error(error.message);
       res.status(500).send("Internal Server error");
+    }
+});
+
+// ROUTE 4: Get one note for the focused reading experience. Login Required
+router.get('/note/:id', fetchUser, async (req, res) => {
+    try {
+        const note = await Note.findById(req.params.id);
+        if (!note) return res.status(404).json({ error: 'Note not found' });
+        if (note.user.toString() !== req.user.id) return res.status(403).json({ error: 'Not allowed' });
+        res.json(note);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: 'Internal Server error' });
     }
 });
 
