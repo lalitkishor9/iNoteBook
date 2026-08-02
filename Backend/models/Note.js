@@ -8,7 +8,9 @@ const NotesSchema = new Schema({
   },
   title:{
     type: String,
-    required: true
+    required: true,
+    trim: true,
+    maxlength: 100
   },
   description:{
     type: String,
@@ -18,7 +20,7 @@ const NotesSchema = new Schema({
     type: String,
     default: "General",
     trim: true,
-    maxlength: 40
+    maxlength: 32
   },
   pinned:{
     type: Boolean,
